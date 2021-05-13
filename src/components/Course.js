@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { insert, read, update, remove } from '../services/apiService';
 
+
+
 const Course = ({match, history}) => {
     
   const [id] = useState(match.params.id)  
@@ -31,6 +33,15 @@ const back = () => {
 }
 
 const save = () => {
+    if (course.name === '' || course.name === '') {     
+        alert('Some of required fields are empty!');     
+        return;   
+    }    
+    if (course.points === '' || course.points === '') {     
+        alert('Some of required fields are empty!');     
+        return;   
+    }    
+    
     if (id === '0') {
         course._id = undefined;
         insert('courses', course, data => {
@@ -53,23 +64,33 @@ const del = () => {
 
 }
 
+const coursenameEmpty = course.name === null || course.name === ''; 
+const coursepointsEmpty = course.points === null || course.points === ''; 
+
     return (
     <div className='container'>
         <h2>Course</h2>
         <form className='input-form'>
             <div style={{margin:'12px 0'}}>
+            { coursenameEmpty && <div> This field is required! </div>}
                 <label htmlFor='name'>Course name:</label>
                 <input type='text' 
-                name='name' 
-                value={course.name}
-                onChange={changeHandler} />
-            </div>
+                    name='name' 
+                    value={course.name}
+                    onChange={changeHandler}
+                    required
+                />
+                        </div>
             <div style={{margin:'12px 0'}}>
+            { coursepointsEmpty && <div>This field is required, you can enter only the number!</div>}
                 <label htmlFor='points'>Course points: </label>
-                <input type='string' 
-                name='points' 
-                value={course.points}
-                onChange={changeHandler} />
+                <input type='number' 
+                    name='points' 
+                    value={course.points}
+                    onChange={changeHandler} 
+                    required
+
+                />
             </div>
             <hr />
             {id !=='0' && (

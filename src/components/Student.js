@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { insert, read, update, remove } from '../services/apiService';
 
+
+
 const Student = ({match, history}) => {
     
   const [id] = useState(match.params.id)  
@@ -33,6 +35,16 @@ const back = () => {
 }
 
 const save = () => {
+    if (student.firstName === '' || student.firstName === '') {     
+        alert('Some of required fields are empty!');     
+        return;   
+    }    
+    if (student.lastName === '' || student.lastName === '') {     
+        alert('Some of required fields are empty!');     
+        return;   
+    }   
+
+
     if (id === '0') {
         student._id = undefined;
         insert('students', student, data => {
@@ -55,31 +67,45 @@ const del = () => {
 
 }
 
+
+const firstNameEmpty = student.firstName === null || student.firstName === ''; 
+const lastNameEmpty = student.lastName === null || student.lastName === ''; 
+
     return (
     <div className='container'>
         <h2>Student</h2>
         <form className='input-form'>
             <div style={{margin:'12px 0'}}>
+            {firstNameEmpty && <div>This field is required!</div>} 
                 <label htmlFor='firstName'>First name:</label>
                 <input type='text' 
                 name='firstName' 
                 value={student.firstName}
-                onChange={changeHandler} />
+                onChange={changeHandler} 
+                placeholder='Enter your first name!' 
+                required
+                />
+
             </div>
 
             <div style={{margin:'12px 0'}}>
+            {lastNameEmpty && <div>This field is required!</div>} 
                 <label htmlFor='lastName'>Last name:</label>
                 <input type='text' 
                 name='lastName' 
                 value={student.lastName}
-                onChange={changeHandler} />
+                onChange={changeHandler} 
+                placeholder='Enter your last name!'
+                required
+                />
             </div>
 
             <div style={{margin:'12px 0'}}>
                 <label htmlFor='yearOfBirth'>Year of birth:</label>
-                <input type='string' 
+                <input type='number' 
                 name='yearOfBirth' 
                 value={student.yearOfBirth}
+                placeholder='You can enter only the number!'
                 onChange={changeHandler} />
             </div>
 
